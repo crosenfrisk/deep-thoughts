@@ -10,6 +10,8 @@ import {
 // 'InMemoryCache' enables the Apollo Client instance to cache API response data so that we can perform requests more efficiently.
 // 'createHttpLink' allows us to control how the Apollo Client makes a request. Think of it like middleware for the outbound network requests.
 
+import { setContext } from '@apollo/client/link/context';
+
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -26,8 +28,18 @@ const httpLink = createHttpLink({
   uri: "/graphql",
 });
 
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('id_token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
 const client = new ApolloClient({
-  link: httpLink,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
