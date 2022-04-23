@@ -29,6 +29,7 @@
   ## Usage
   Will update
 
+  ## Credits
 
   ## License
   ![License for README](https://img.shields.io/badge/license-MIT-green/)
